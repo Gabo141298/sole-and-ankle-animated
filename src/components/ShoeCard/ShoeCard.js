@@ -1,7 +1,7 @@
 import React from 'react';
-import styled from 'styled-components/macro';
+import styled, { keyframes } from 'styled-components/macro';
 
-import { WEIGHTS } from '../../constants';
+import { QUERIES, WEIGHTS } from '../../constants';
 import { formatPrice, pluralize, isNewShoe } from '../../utils';
 import Spacer from '../Spacer';
 
@@ -73,15 +73,39 @@ const Link = styled.a`
   color: inherit;
 `;
 
-const Wrapper = styled.article``;
+const Wrapper = styled.article`
+  position: relative;
+`;
 
 const ImageWrapper = styled.div`
-  position: relative;
+  border-radius: 16px 16px 4px 4px;
+  overflow: hidden;
 `;
 
 const Image = styled.img`
   width: 100%;
-  border-radius: 16px 16px 4px 4px;
+  display: block;
+
+  @media (hover: hover) and (${QUERIES.noMotionReductionPreference}) {
+    will-change: transform;
+    transition: transform 500ms;
+    /*
+    Josh's idea:
+    transition: filter 1000ms;
+    filter: brightness(90%);
+    */
+    transform-origin: 50% 90%;
+
+    ${ImageWrapper}:hover & {
+      transform: scale(1.1);
+      transition: transform 250ms ease-out;
+      /*
+      Josh's idea:
+      transition: filter 500ms;
+      filter: brightness(100%);
+      */
+    }
+  }
 `;
 
 const Row = styled.div`
@@ -109,6 +133,24 @@ const SalePrice = styled.span`
   color: var(--color-primary);
 `;
 
+const ShiftAnimation = keyframes`
+  50% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+`;
+
+const FadeInAnimation = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
+
 const Flag = styled.div`
   position: absolute;
   top: 12px;
@@ -121,6 +163,25 @@ const Flag = styled.div`
   font-weight: ${WEIGHTS.bold};
   color: var(--color-white);
   border-radius: 2px;
+
+  ${ImageWrapper}:hover & {
+    animation: ${FadeInAnimation} ease-out 500ms;
+  }
+  
+  @media ${QUERIES.noMotionReductionPreference} {
+    animation: none;
+    transform: translate(0);
+    transition: transform 300ms;
+
+    ${ImageWrapper}:hover &,
+    ${ImageWrapper}:focus & {
+      animation: none;
+      //animation: ${ShiftAnimation} 250ms ease-out forwards;
+      //animation-delay: 250ms;
+      transform: translateY(-25%);
+      transition: transform 200ms;
+    }
+  }
 `;
 
 const SaleFlag = styled(Flag)`
