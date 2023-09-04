@@ -6,8 +6,8 @@ import { QUERIES, WEIGHTS } from '../../constants';
 const NavLink = ({ children, ...delegated }) => {
   return (
     <Wrapper {...delegated}>
-      <UnhoveredText>{children}</UnhoveredText>
       <HoveredText aria-hidden={true}>{children}</HoveredText>
+      <UnhoveredText>{children}</UnhoveredText>
     </Wrapper>
   );
 };
@@ -33,10 +33,18 @@ const Wrapper = styled.a`
 const UnhoveredText = styled.span`
   display: block;
   @media ${QUERIES.noMotionReductionPreference} {
-    transform: translateY(0%);
+    /* Original solution */
+    /* transform: translateY(0%); */
+
+    /* Stretch goal */
+    transform: scale(1);
     transition: transform var(--exit-transition-time);
     ${Wrapper}:hover & {
-      transform: translateY(-100%);
+      /* Original solution */
+      /* transform: translateY(-100%); */
+
+      /* Stretch goal */
+      transform: scale(0);
       transition: transform var(--enter-transition-time);
     }
   }
@@ -52,15 +60,20 @@ const HoveredText = styled.span`
   inset: 0;
   margin: auto;
 
-  font-weight: ${WEIGHTS.bold};
+  /* Original solution */
+  /* font-weight: ${WEIGHTS.bold}; */
+
+  /* Stretch goal */
+  opacity: 0.6;
 
   @media ${QUERIES.noMotionReductionPreference} {
-    transform: translateY(100%);
+    /* Original solution */
+    /* transform: translateY(100%);
     transition: transform var(--exit-transition-time);
     ${Wrapper}:hover & {
       transform: translateY(0%);
       transition: transform var(--enter-transition-time);
-    }
+    } */
   }
 `;
 
