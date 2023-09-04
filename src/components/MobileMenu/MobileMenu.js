@@ -48,12 +48,23 @@ const FadeIn = keyframes`
   }
 `;
 
+// Original solution
 const SlideIn = keyframes`
   from {
     transform: translateX(100%);
   }
   to {
     transform: translateX(0%);
+  }
+`;
+
+// Stretch goal
+const DoorTransition = keyframes`
+  from {
+    transform: rotateY(90deg);
+  }
+  to {
+    transform: rotateY(0deg);
   }
 `;
 
@@ -65,6 +76,7 @@ const Overlay = styled(DialogOverlay)`
   bottom: 0;
   display: flex;
   justify-content: flex-end;
+    perspective: 250px;
 `;
 
 const Backdrop = styled.div`
@@ -76,7 +88,7 @@ const Backdrop = styled.div`
   background: var(--color-backdrop);
 
   // Not an aggressive animation, so it can live outside media query.
-    animation: ${FadeIn} 700ms;
+    animation: ${FadeIn} 1200ms;
 `;
 
 const Content = styled(DialogContent)`
@@ -88,7 +100,8 @@ const Content = styled(DialogContent)`
   padding: 24px 32px;
 
   @media ${QUERIES.noMotionReductionPreference} {
-    animation: ${SlideIn} 400ms both cubic-bezier(.17,.44,.46,1.05);
+    transform-origin: right center;
+    animation: ${DoorTransition} 1000ms both cubic-bezier(.17,.44,.46,1.05);
     animation-delay: 200ms;
   }
 `;
@@ -99,8 +112,8 @@ const ContentWrapper = styled.div`
   flex-direction: column;
 
   // Not an aggressive animation, so it can live outside media query.
-  animation: ${FadeIn} 200ms both;
-  animation-delay: 500ms;
+  animation: ${FadeIn} 500ms both;
+  animation-delay: 750ms;
 `;
 
 const CloseButton = styled(UnstyledButton)`
